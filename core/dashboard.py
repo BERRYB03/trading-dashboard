@@ -282,7 +282,7 @@ def render_command_center():
         st.warning("PAPER TRADING — simulated fills on real live Pionex data. No real orders placed.")
         
         DELTA_STATE_PATH = os.path.join(DATA_DIR, 'delta_state.json')
-        DELTA_LEDGER_PATH = os.path.join(DATA_DIR, 'failures_ledger.json')
+        DELTA_LEDGER_PATH = os.path.join(DATA_DIR, 'delta_ledger.json')
 
         if os.path.exists(DELTA_STATE_PATH):
             with open(DELTA_STATE_PATH) as f:

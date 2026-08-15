@@ -8,7 +8,7 @@ matched), but the market conditions used to price those simulated fills
 are not synthetic.
 
 This intentionally logs LOSSES as well as wins. If you look at
-failures_ledger.json after running this for a while and every single
+delta_ledger.json after running this for a while and every single
 trade is a win, that is a bug, not good luck — stop and debug it rather
 than trusting it.
 
@@ -32,7 +32,7 @@ from pionex_client import PionexClient, PionexAPIError
 import strategy
 
 DATA_DIR = os.environ.get("DELTA_DATA_DIR", "/app/data")
-LEDGER_PATH = os.path.join(DATA_DIR, "failures_ledger.json")
+LEDGER_PATH = os.path.join(DATA_DIR, "delta_ledger.json")
 STATE_PATH = os.path.join(DATA_DIR, "delta_state.json")
 SYSTEM_STATE_PATH = os.path.join(DATA_DIR, "system_state.json")
 
