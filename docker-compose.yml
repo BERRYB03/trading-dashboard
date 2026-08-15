@@ -79,7 +79,7 @@ services:
       - TRADE_SIZE_USDT=${TRADE_SIZE_USDT}
       - DELTA_POLL_SECONDS=3
       - DELTA_FEE_BPS=10          # verify against your actual Pionex fee tier
-      - DELTA_MAX_DAILY_LOSS_PCT=3.0
+      - DELTA_MAX_DAILY_LOSS_PCT=10.0
     volumes:
       - shared_data:/app/data
     deploy:
