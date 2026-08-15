@@ -9,6 +9,8 @@ services:
     command: sh -c "python core/alpha_scanner.py & python core/enforcer.py"
     volumes:
       - shared_data:/app/core/data
+    environment:
+      - PYTHONPATH=/app
     restart: unless-stopped
     deploy:
       resources:
@@ -28,6 +30,8 @@ services:
     command: python core/gamma_enforcer.py
     volumes:
       - shared_data:/app/core/data
+    environment:
+      - PYTHONPATH=/app
     restart: unless-stopped
     deploy:
       resources:
@@ -47,6 +51,8 @@ services:
     command: python core/macro_strategist.py
     volumes:
       - shared_data:/app/core/data
+    environment:
+      - PYTHONPATH=/app
     restart: unless-stopped
     deploy:
       resources:
@@ -66,6 +72,8 @@ services:
     command: streamlit run core/dashboard.py --server.port=8501 --server.address=127.0.0.1
     volumes:
       - shared_data:/app/core/data
+    environment:
+      - PYTHONPATH=/app
     ports:
       - "127.0.0.1:8501:8501"
     restart: unless-stopped
