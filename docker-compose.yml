@@ -74,6 +74,9 @@ services:
       - PYTHONPATH=/app
       - DELTA_SYMBOL=BTC_USDT
       - DELTA_SYMBOL_TYPE=SPOT
+      - PIONEX_API_KEY=${PIONEX_API_KEY}
+      - PIONEX_API_SECRET=${PIONEX_API_SECRET}
+      - TRADE_SIZE_USDT=${TRADE_SIZE_USDT}
       - DELTA_POLL_SECONDS=3
       - DELTA_FEE_BPS=10          # verify against your actual Pionex fee tier
       - DELTA_MAX_DAILY_LOSS_PCT=3.0
