@@ -184,8 +184,15 @@ def run():
                 continue
 
             signal = strategy.evaluate(bt)
+            
             if signal is None:
-                update_state(ledger, status="Scanning — no signal")
+                bid_size = float(bt.get("bidSize", 0))
+                ask_size = float(bt.get("askSize", 0))
+                current_imbalance = strategy.compute_imbalance(bid_size, ask_size)
+                status_msg = f"Scanning — Imbalance: {current_imbalance:+.2f} (Threshold: ±{strategy.IMBALANCE_THRESHOLD})"
+                update_state(ledger, status=status_msg)
+                if int(time.time()) % 15 < POLL_SECONDS:
+                    print(f"[DELTA SCALP] {status_msg}")
                 time.sleep(POLL_SECONDS)
                 continue
 
