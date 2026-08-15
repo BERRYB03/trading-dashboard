@@ -17,16 +17,20 @@ steps:
       
       # Execute deployment script on the instance using IAP Tunnel
       gcloud compute ssh $$INSTANCE_NAME --zone=$$ZONE --tunnel-through-iap --command="
-        cd /opt/projectalpha && 
+        mkdir -p ~/projectalpha &&
+        cd ~/projectalpha && 
         echo '[*] Pulling latest autonomous parameters and codebase...' &&
-        git pull origin main && 
+        git init &&
+        git remote add origin https://github.com/BERRYB03/trading-dashboard.git || true &&
+        git fetch origin main &&
+        git reset --hard origin/main &&
         
         echo '[*] Rebuilding Docker containers...' &&
-        docker-compose build && 
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v \"\$$PWD:\$$PWD\" -w=\"\$$PWD\" docker/compose:1.29.2 build && 
         
         echo '[*] Cycling active daemons...' &&
-        docker-compose down && 
-        docker-compose up -d &&
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v \"\$$PWD:\$$PWD\" -w=\"\$$PWD\" docker/compose:1.29.2 down && 
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v \"\$$PWD:\$$PWD\" -w=\"\$$PWD\" docker/compose:1.29.2 up -d &&
         
         echo '[SUCCESS] Deployment Complete.'
       "
