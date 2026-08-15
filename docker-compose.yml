@@ -58,5 +58,26 @@ services:
         max-size: "10m"
         max-file: "3"
 
+  intel_dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: intel_dashboard
+    command: streamlit run core/dashboard.py --server.port=8501 --server.address=127.0.0.1
+    volumes:
+      - shared_data:/app/core/data
+    ports:
+      - "127.0.0.1:8501:8501"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 400M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
 volumes:
   shared_data:
