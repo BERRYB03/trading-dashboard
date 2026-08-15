@@ -14,10 +14,10 @@ points, not a validated edge.
 from dataclasses import dataclass
 from typing import Optional
 
-IMBALANCE_THRESHOLD = 0.35   # top-of-book imbalance required to trigger a signal
-TAKE_PROFIT_BPS = 8          # exit target, in basis points of entry price
-STOP_LOSS_BPS = 6            # exit stop, in basis points of entry price
-MAX_HOLD_SECONDS = 90        # force-exit if neither TP nor SL hit in time
+IMBALANCE_THRESHOLD = 0.01   # top-of-book imbalance required to trigger a signal
+TAKE_PROFIT_BPS = 2          # exit target, in basis points of entry price
+STOP_LOSS_BPS = 2            # exit stop, in basis points of entry price
+MAX_HOLD_SECONDS = 15        # force-exit if neither TP nor SL hit in time
 
 
 @dataclass
