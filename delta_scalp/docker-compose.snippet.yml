@@ -1,0 +1,16 @@
+# Add this service to your existing docker-compose.yml, under `services:`
+  delta_scalp:
+    build:
+      context: .
+      dockerfile: Dockerfile.delta
+    container_name: delta_scalp
+    restart: always
+    environment:
+      - PYTHONPATH=/app
+      - DELTA_SYMBOL=SUI_USDT
+      - DELTA_SYMBOL_TYPE=PERP
+      - DELTA_POLL_SECONDS=3
+      - DELTA_FEE_BPS=10          # verify against your actual Pionex fee tier
+      - DELTA_MAX_DAILY_LOSS_PCT=3.0
+    volumes:
+      - shared_data:/app/data

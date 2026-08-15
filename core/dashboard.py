@@ -225,7 +225,7 @@ def render_command_center():
     st.markdown("---")
     st.subheader("⚡ Daemon Live Actions & Efficiency Telemetry")
 
-    daemon_tabs = st.tabs(["🤖 Market Makers (BETA)", "🎯 High-Frequency Sniper (GAMMA)", "🧠 Macro Strategist", "🛡️ Intel Dashboard"])
+    daemon_tabs = st.tabs(["🤖 Market Makers (BETA)", "🎯 High-Frequency Sniper (GAMMA)", "🧠 Macro Strategist", "🛡️ Intel Dashboard", "📈 Project DELTA (Paper Scalp)"])
 
     with daemon_tabs[0]:
         col_d1, col_d2 = st.columns([1, 2])
@@ -276,6 +276,43 @@ def render_command_center():
             st.code("""[INFO] Streamlit server listening on 127.0.0.1:8501.
 [ACTION] Encrypted tunnel verified via Google IAP.
 [HEALTH] Shared volume mounted successfully.""", language="text")
+
+
+    with daemon_tabs[4]:
+        st.warning("PAPER TRADING — simulated fills on real live Pionex data. No real orders placed.")
+        
+        DELTA_STATE_PATH = os.path.join(DATA_DIR, 'delta_state.json')
+        DELTA_LEDGER_PATH = os.path.join(DATA_DIR, 'failures_ledger.json')
+
+        if os.path.exists(DELTA_STATE_PATH):
+            with open(DELTA_STATE_PATH) as f:
+                state = json.load(f)
+
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Total Paper Trades", state.get("total_trades") or 0)
+            with col2:
+                wr = state.get("win_rate_pct")
+                st.metric("Win Rate", f"{wr}%" if wr is not None else "—")
+            with col3:
+                pnl = state.get("cumulative_pnl_pct")
+                st.metric("Cumulative PnL", f"{pnl:+.2f}%" if pnl is not None else "—", delta=None)
+
+            st.caption(f"Status: {state.get('status', 'unknown')} | Symbol: {state.get('symbol', '?')} | Today: {state.get('today_pnl_bps', 0):+.1f} bps")
+        else:
+            st.info("No data yet — delta_scalp.py hasn't written its first state file. Check the container logs.")
+
+        st.markdown("**Recent trades (real fills against live prices, wins and losses):**")
+        if os.path.exists(DELTA_LEDGER_PATH):
+            with open(DELTA_LEDGER_PATH) as f:
+                ledger = json.load(f)
+            recent = ledger[-20:][::-1]
+            if recent:
+                st.dataframe(recent, use_container_width=True)
+            else:
+                st.caption("No trades logged yet.")
+        else:
+            st.caption("No trade ledger yet.")
 
 # Execute Dashboard Render
 render_command_center()
