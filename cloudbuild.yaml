@@ -1,0 +1,34 @@
+steps:
+  # Step 1: Execute Remote SSH commands on the GCE Instance securely via IAP
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      echo "Initiating CI/CD Pipeline to Compute Engine Instance..."
+      
+      # The Compute Engine instance name and zone (replace with actual values)
+      INSTANCE_NAME="projectalpha-engine"
+      ZONE="us-central1-a"
+      
+      # NOTE: Cloud Build Service Account MUST have these roles:
+      # - roles/compute.osAdminLogin
+      # - roles/iap.tunnelResourceAccessor
+      
+      # Execute deployment script on the instance using IAP Tunnel
+      gcloud compute ssh $$INSTANCE_NAME --zone=$$ZONE --tunnel-through-iap --command="
+        cd /opt/projectalpha && 
+        echo '[*] Pulling latest autonomous parameters and codebase...' &&
+        git pull origin main && 
+        
+        echo '[*] Rebuilding Docker containers...' &&
+        docker-compose build && 
+        
+        echo '[*] Cycling active daemons...' &&
+        docker-compose down && 
+        docker-compose up -d &&
+        
+        echo '[SUCCESS] Deployment Complete.'
+      "
+options:
+  logging: CLOUD_LOGGING_ONLY

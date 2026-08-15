@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  market_makers:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: market_makers
+    command: sh -c "python core/alpha_scanner.py & python core/enforcer.py"
+    volumes:
+      - shared_data:/app/core/data
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 700M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  high_frequency_sniper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: high_frequency_sniper
+    command: python core/gamma_enforcer.py
+    volumes:
+      - shared_data:/app/core/data
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  macro_strategist:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: macro_strategist
+    command: python core/macro_strategist.py
+    volumes:
+      - shared_data:/app/core/data
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  shared_data:

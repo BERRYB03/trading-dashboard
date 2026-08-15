@@ -1,0 +1,14 @@
+[
+    {
+        "symbol": "BTC_USDT.PERP",
+        "entry_conditions": {
+            "daily_change": 22.5,
+            "volume": 16000000
+        },
+        "original_direction": "long",
+        "confidence": 95,
+        "failure_trigger": "Hit -5% hard stop in 12 minutes",
+        "pnl_pct": -5.02,
+        "timestamp": 1786650000.0
+    }
+]
