@@ -20,7 +20,12 @@ def check_password():
         st.markdown("### ZERO-TRUST AUTHENTICATION REQUIRED")
         pwd = st.text_input("Passphrase", type="password")
         if pwd:
-            if pwd == st.secrets.get("PASSPHRASE", "admin_override"):
+            try:
+                expected_password = st.secrets["PASSPHRASE"]
+            except Exception:
+                expected_password = "admin_override"
+                
+            if pwd == expected_password:
                 st.session_state["password_correct"] = True
                 st.rerun()
             else:
