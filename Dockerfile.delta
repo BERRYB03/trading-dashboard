@@ -8,4 +8,4 @@ COPY pionex_client.py /app/pionex_client.py
 COPY strategy.py /app/strategy.py
 COPY delta_scalp.py /app/delta_scalp.py
 
-CMD ["python", "delta_scalp.py"]
+CMD ["python", "-u", "delta_scalp.py"]
